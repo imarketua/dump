@@ -1,0 +1,33 @@
+<section class="search-details">
+<div class='container-fluid'>
+	<div class="search-header">
+		<h4><?=$board->INFO['h1']?></h4>
+	</div>
+<?
+$board->search->getBoardTypeFilterMobile();
+	echo "<div class='row'>";
+	echo "<div class='price-type'>";
+	echo "<select id='sort' name='sort'>";
+	echo "<option value='' ".($_GET['sort'] == "" ? "selected" : "").">Самые новые</option>";
+	echo "<option value='price ASC' ".($_GET['sort'] == "price ASC" ? "selected" : "").">Самые дешевые</option>";
+	echo "<option value='price DESC' ".($_GET['sort'] == "price DESC" ? "selected" : "").">Самые дорогие</option>";
+	echo "<option value='hits DESC' ".($_GET['sort'] == "hits DESC" ? "selected" : "").">Самые популярные</option>";
+	echo "</select>";
+	echo "</div>";
+	echo "</div>";
+?>
+<br>
+<?
+$board->getBanner(0);
+if(isset($_GET['top_all'])){
+	$board->search->getBoardMobile('top');
+}else{
+	$board->search->getBoardMobile('top4');
+	$board->getBoardMobile();
+}
+
+$board->getBanner(2);
+$board->search->getPagesMobile();
+?>
+</div>
+</section>

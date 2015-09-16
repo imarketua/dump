@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Доска объявлений I-Market.com.ua: сайт бесплатных частных объявлений в Украине - купля продажа б/у товаров на I-Market.com.ua</title>
+    <meta name="title" content="">
+    <meta name="description" content="">
+    <base href="<?=HOME?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" href="favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/mobile/css/style.css">
+    <link rel="stylesheet" href="/mobile/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/mobile/vendor/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="/mobile/vendor/owl/owl.carousel.css">
+    <link rel="stylesheet" href="/mobile/vendor/owl/owl.theme.css">
+    <script src="/mobile/vendor/jquery/dist/jquery.min.js"></script>
+  </head>
+  <body>
+    <nav class="navigation">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-9">
+            <div class="logo"><a href="/"><img src="/img/logo.png" alt=""></a></div>
+          </div>
+          <div class="col-xs-3">
+            <div class="burger-btn"><span class="fa fa-bars"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="drop-down-menu">
+        <ul>
+        <?php if(!$board->getUser()): ?>
+          <li><a href="register/">Регистрация</a></li>
+        <?php endif; ?>
+          <li><a href="profile/">Личный кабинет</a></li>
+          <li><a href="add-item/">Подать объявление</a></li>
+          <li><a href="rules/">Правила</a></li>
+          <li><a href="help/">Техподдержка</a></li>
+        </ul>
+      </div>
+    </nav>
+  <?php if ($this->get('index')): ?>
+    <header class="header-container">
+      <div class="header-desc">
+        <p>i Market - частные объявления по всей Украине.</p>
+      </div>
+    </header>
+  <?php endif; ?>
+    <section class="search">
+      <div class="container">
+        <div class="search-input">
+          <form method="get" action="<?=HOME?>search/" id="search-form">
+            <input type="text" name="q" placeholder="Что ищем?">
+            <button type="submit" class="search-submit">Найти</button>
+          </form>
+        </div>
+      </div>
+    </section>
+    <?=$this->getContent() ?>
+    <footer class="footer-container">
+      <div class="container">
+        <div class="row">
+          <div class="footer-logo"><img src="/img/logo.png" alt=""></div>
+          <div class="footer-links">
+            <ul class="cf">
+              <li><a href="/">главная</a></li>
+              <li><a href="/add-item/">подать объявление</a></li>
+              <li><a href="/search/">расширенный поиск</a></li>
+              <li><a href="/rules/about/">о нас</a></li>
+              <li><a href="/help/">обратная связь</a></li>
+              <li><a href="/rules/">правила</a></li>
+              <li><a href="/register/">регистрация</a></li>
+              <li><a href="/profile/">личный кабинет</a></li>
+              <li><a href="/mobile/">полная версия</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <hr>
+          <div class="copyright"><span>&copy; 2015 площадка для объявлений «iMarket»</span></div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/mobile/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/mobile/vendor/owl/owl.carousel.min.js"></script>
+    <script src="/mobile/vendor/modernizr/modernizr.js"></script>
+    <script src="/mobile/js/validate.js"></script>
+    <script src="/mobile/js/upload.js"></script>
+    <script src="/mobile/js/main.js"></script>
+    <script async src="//www.google-analytics.com/analytics.js"></script>
+    <script async src="https://www.gstatic.com/recaptcha/api2/r20150817145345/recaptcha__en.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-35803778-3', 'iMarket.ua'); ga('send', 'pageview');
+    </script><!-- HotLog --><span id="hotlog_counter" style="display:none;"></span><span id="hotlog_dyn"></span>
+    <script>
+      var hot_s = document.createElement('script');
+      hot_s.type = 'text/javascript'; hot_s.async = true;
+      hot_s.src = 'http://js.hotlog.ru/dcounter/2497061.js';
+      hot_d = document.getElementById('hotlog_dyn');
+      hot_d.appendChild(hot_s);
+    </script>
+    <noscript><a href="http://click.hotlog.ru/?2497061" target="_blank"></a><img src="http://hit34.hotlog.ru/cgi-bin/hotlog/count?s=2497061&amp;im=305" border="0" title="HotLog" alt="HotLog" style="height:0px;"></noscript>
+  </body>
+</html>

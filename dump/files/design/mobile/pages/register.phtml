@@ -1,0 +1,9 @@
+<div id='content' align='left' class='container-fluid'>
+<?php if(!isset($_POST['email']) && !isset($_POST['pass']) && !isset($_GET['confirm'])): ?>
+  <?php echo $board->getRegisterFormMobile(); ?>
+<?php elseif(isset($_GET['confirm'])): ?>
+  <?php echo $board->confirm();?>
+<?php else: ?>
+  <?php $board->registerMobile(); ?>
+<?php endif; ?>
+</div>

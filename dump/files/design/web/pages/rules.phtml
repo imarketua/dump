@@ -1,0 +1,24 @@
+<div id='content' align='left'>
+<div class='left'>
+<div class='w230px'>
+<span class='mh1 mbottom0 pbt5 bold arial'><span class='pleft5'>Информация</span></span>
+</div>
+<?
+  $pages = $this->get('pages');
+  $url   = $this->get('url');
+	foreach ($pages as $key => $page) {
+    $url = $page['href'] != 'index' ? HOME.'rules/'.$page['href'].'/' : HOME.'rules/';
+    echo "<a class='left-menu block pbt5' href='$url'>".$page['name']."</a>";
+	}
+?>
+</div>
+<div style='padding-left: 230px;'>
+<div style='border-left: 1px solid #eee;'>
+<span class='mh1 mtop11 bold pbt5 pleft5 mbottom0 arial'><? echo $board->INFO['h1']; ?></span>
+<div class='p5px' style='font-size: 14px; font-family: verdana; color: #333333;'>
+<? echo $board->INFO['text']; ?>
+</div>
+</div>
+</div>
+
+</div>

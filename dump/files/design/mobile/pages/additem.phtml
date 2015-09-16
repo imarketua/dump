@@ -1,0 +1,324 @@
+<?php $errors = $this->get('errors'); ?>
+<?php $FlagAddAdv = $this->get('FlagAddAdv'); ?>
+<?php $photos_id = $this->get('photos_id'); ?>
+<?php $title = $this->get('title'); ?>
+<?php $autor = $this->get('autor'); ?>
+<?php $email = $this->get('email'); ?>
+<?php $phone = $this->get('phone'); ?>
+<?php $text = $this->get('text'); ?>
+<?php $type = $this->get('type'); ?>
+<?php $price = $this->get('price'); ?>
+<?php $price_t = $this->get('price_t'); ?>
+<?php $city = $this->get('city'); ?>
+<?php $root_region = $this->get('root_region'); ?>
+<?php $root_category = $this->get('root_category'); ?>
+<?php $id_category = $this->get('id_category'); ?>
+<?php $address = $this->get('address'); ?>
+
+<?php
+function getCategory($root_id = 0, $selected = 0, $txt = "Основная категория")
+{
+	$db = new dataBase();
+	echo "<div class='form-group-custom' ".($root_id == 0 ? "id='choose-category'":"").">
+	<h4>$txt *</h4>";
+	echo "<select ".($root_id != 0 ? "name='id_category'":"")." data-validate=\"v_required\" class=\"category\">
+	<option value='' disabled ".($selected == 0 ? "selected" : "").">Выбрать...</option>";
+	$db->query("SELECT * FROM categories WHERE root_id = '$root_id'");
+	while($c = mysql_fetch_array($db->data))
+	{
+		echo "<option value='".$c['id']."' data-id='".$c['id']."' ".($selected === $c['id'] ? "selected" : "").">".$c['name']."</option>";
+	}
+	echo "</select>";
+	echo "</div>";
+}
+
+function getRegion($root_id = 0, $selected = 0, $txt = "Регион")
+{
+	$db = new dataBase();
+	echo "<div class='form-group-custom' ".($root_id == 0 ? "id='choose-region'":"id='city'").">
+	<h4>$txt *</h4>";
+	echo "<select ".($root_id != 0 ? "name='city'":"")." data-validate=\"v_required\" class=\"region\">
+	<option value='' disabled ".($selected == 0 ? "selected" : "").">Выбрать...</option>";
+	$db->query("SELECT * FROM region WHERE root_id = '$root_id'");
+	while($c = mysql_fetch_array($db->data))
+	{
+		echo "<option value='".$c['href']."' data-id='".$c['id']."' ".(($selected === $c['id'] or $selected === $c['href']) ? "selected" : "").">".$c['name']."</option>";
+	}
+	echo "</select>";
+	echo "</div>";
+}
+
+$user = array(
+'phone' => false,
+'name' => false,
+'region' => false
+);
+
+if($id = $board->getUserId()){
+	$result = $db->query("SELECT * FROM users WHERE id = " . $id);
+	$user = mysql_fetch_array($result);
+}
+
+?>
+<section class="add-item">
+      <div class="container">
+
+<h3><? echo $board->INFO['h1']; ?></h3>
+      <?
+      if($errors != "")
+      {
+      	echo "<div class=\"alert alert-danger\" role=\"alert\">$errors</div>";
+      }
+      ?>
+<div class="row">
+<div class="add-item-form">
+<?php if(!$FlagAddAdv){ ?>
+<form method='post' id='add-item-form' action='<? echo isset($_GET['act']) && !empty($_GET['act'])? HOME.'add-item/'.$_GET['act'].'/' : HOME.'add-item/'; ?>'>
+	<div class="form-group-custom">
+		<h4>Заголовок *</h4>
+		<input type="text" placeholder="Заголовок" value="<?=$title?>" name="title" data-validate="v_required, v_min_5, v_max_60">
+	</div>
+<?
+	getCategory(0, $root_category);
+	if($root_category != 0)
+	getCategory($root_category, $id_category, "Подкатегория");
+?>
+
+	<div class="form-group-custom">
+		<h4>Ваше имя *</h4>
+		<input type="text" placeholder="Имя" name="autor" value='<?echo (!empty($autor) ? $autor : ((!empty($user['name'])) ? $user['name'] : '' ));?>' data-validate="v_required, v_max_60">
+	</div>
+
+	<div class="form-group-custom">
+		<h4>Ваш телефон *</h4>
+		<input type="text" placeholder="Телефон" name="phone" value='<?echo (!empty($phone) ? $phone : ((!empty($user['phone'])) ? $user['phone'] : '' ));?>' data-validate="v_required, v_phone">
+	</div>
+
+	<div class="form-group-custom">
+		<h4>Ваш e-mail *</h4>
+		<input type="text" placeholder="e-mail" name="email" value='<?echo $email;?>' data-validate="v_required, v_email">
+	</div>
+	<hr>
+	<div class="form-group-custom">
+		<h4>Описание товара *</h4>
+		<textarea name="text" data-validate="v_required, v_min_15, v_max_1500"><?=$text?></textarea>
+	</div>
+	<hr>
+	<div class="form-group-custom">
+    <input type="radio" name="type" value="S" id="person" <?echo $type == 'S' ? 'checked' : '';?> required>
+    <label for="person">Частное лицо</label><br>
+    <input type="radio" name="type" value="B" id="business" <?echo $type == 'B' ? 'checked' : '';?> required>
+    <label for="business">Бизнес</label>
+  </div>
+  <hr>
+	<div class="form-group-custom">
+		<div class="price-group">
+			<h4>Цена</h4>
+			<input type="text" placeholder="Цена" name="price" data-validate="v_num_only" value="<?echo $price;?>">
+			<select name="price_t">
+				<option value="uah"<?php echo ($price_t=='uah')?' selected':''?>>грн</option>
+				<option value="usd"<?php echo ($price_t=='usd')?' selected':''?>>$</option>
+			</select>
+		</div>
+	</div>
+	<div class="form-group-custom" id="photogr">
+		<h4>Фотографии *</h4>
+		<div id="fileupload" class="add-btn add-but"><span class="fa fa-picture-o"></span><span>Нажмите, чтобы выбрать фотографии</span></div>
+		<div id="photo-content"><?
+		$c = $db->query("SELECT count FROM photo_main WHERE folder = '".functions::q($photos_id)."'");
+		$count = mysql_fetch_array($c);
+		$ph = ($count['count']) ? $count['count'] : 0 ;
+
+			$db->query("SELECT * FROM photo WHERE folder = '".functions::q($photos_id)."'");
+			$i = 0;
+			while($p = mysql_fetch_assoc($db->data))
+			{
+				$url = HOME.'photo/'.$p['folder'].'/'.$p['name'];
+				$url_local = DIR.'/photo/'.$p['folder'].'/'.$p['name'];
+				$size = functions::getFullSize($url_local, 90, 90);
+				echo "<span class='photo-min'>";
+				echo "<span class='img-min img' ".(($ph == $i) ? 'style="box-shadow: black 0px 0px 2px 2px;"' : '' )." data='$i' onclick=\"make_default($(this))\" data-info=\"Кликните для выбора главной фотографии объявления\">";
+				echo "<img src='$url' width='".$size['width']."' height='".$size['height']."'>";
+				echo "</span>";
+				echo "<a href='javascript:void(0);' data-id=\"".$p['id']."\">Удалить</a>";
+				echo "</span>";
+				$i++;
+			}
+		?></div>
+		<input type="hidden" name="photos_id" id="photos_id" required="" value="<? echo $photos_id; ?>">
+		<input type="hidden" name="photo_c" id="photo_c" value="<?php echo $ph;?>">
+	</div>
+	<hr>
+
+<?
+if(!empty($user['region'])){
+	$res = $db->query("select root_id from region where href= '".$user['region']."'");
+	$reg = mysql_fetch_array($res);
+}
+	$root_region = (!empty($root_region) ? $root_region : (!empty($reg['root_id']) ? $reg['root_id'] : 0 ));
+	$city = (!empty($city) ? $city : (!empty($user['region']) ? $user['region'] : 0 ));
+	getRegion(0, $root_region);
+	if($root_region != 0)
+	getRegion($root_region, $city, "Город");
+?>
+
+<div class="form-group-custom">
+	<h4>Адрес</h4>
+	<input type="text" placeholder="Адрес" name="address" value="<?echo $address;?>">
+</div>
+
+<button type="submit" class="submit-btn"><? echo isset($_GET['act']) ? "Редактировать" : "Опубликовать" ?></button>
+</form>
+<input type="file" name="uploadfile" id="image-upload">
+<?php } else
+{
+	//echo '<h1>Объявление успешно подано</h1> <br/> <a href="/profile">Перейти к списку моих объявлений</a>';
+	echo '<script type="text/javascript">
+	  location="'.HOME.'profile/";
+	  document.location.href="'.HOME.'profile/";
+	  location.replace("'.HOME.'profile/");
+	  window.location.reload("'.HOME.'profile/");
+	  document.location.replace("'.HOME.'profile/");
+	</script>';
+	exit;
+}?>
+</div>
+</div>
+</section>
+<script type="text/javascript">
+	$(function(){
+	var btn = $('.add-but');
+	var id  = $('#photos_id').val();
+	var content = $('#photo-content');
+	new AjaxUpload(btn, {
+	action: 'http://'+window.location.host+'/upload.php',
+	name: 'uploadfile',
+	data: { id: id, op: 'upload' },
+	onSubmit: function(file, ext) {
+
+	},
+	onComplete: function(file, response) {
+		var data = cJSON(response);
+		if (!data) {
+			alert(response);
+		} else {
+			fckngcrap = true;
+        var c = 0;
+        var next = 0;
+        if($('.img').length > 0){
+                $('.img').each(function(){
+                        if($(this).attr('data') > c) c = $(this).attr('data');
+                });
+                next = c + 1;
+        }
+			var html = "";
+			html += "<span class='photo-min'>";
+			html += "<span class='img-min img' data='"+next+"' onclick=\"make_default($(this))\" data-info=\"Кликните для выбора главной фотографии объявления\">";
+			html += "<img src='"+data.path+"' width='"+data.width+"' height='"+data.height+"'>";
+			html += "</span>";
+			html += "<a href='javascript:void(0);' data-id=\""+data.id+"\">Удалить</a>";
+			html += "</span>";
+			content.append(html);
+			$('.img').off('mouseover');
+			$('.img').off('mouseout');
+                $('.img').each(function(i)
+                {
+                        $(this).mouseover( function() {
+                                var position = 'right';
+                                if($(this).data('pos') != undefined) position = $(this).data('pos');
+
+                                e = $(this);
+                                txt = e.data('info');
+                                div({
+                                id: i,
+                                text: txt,
+                                position: position,
+                                type: 'information',
+                                element: e
+                                });
+                        }).mouseout(function() {
+                                div({
+                                id: i,
+                                op: 'destroy'
+                                });
+                        });
+                })
+		}
+	}
+	});
+
+	$('#add-item-form').on('submit', function(){
+		if($('#photo-content').html().length <= 0) {
+			alert('Нужно добавить хотя бы одну фотографию.');
+			return false;
+		}
+
+		// make_default($(this))
+	});
+});
+$(document).on('click', '.photo-min a', function(e)
+{
+	var el = $(e.target).closest('.photo-min');
+	var id = el.find('a').data('id');
+	$.ajax({
+		type: "POST",
+		url: 'http://'+window.location.host+'/upload.php',
+		scriptCharset: 'utf-8',
+		data: {id: id, op: 'delete'},
+		success: function(response)
+		{
+			if(response == 'ok') el.remove();
+			else alert(response);
+		}
+	});
+});
+function cJSON(res)
+	{
+		try
+		{
+		   var json = $.parseJSON(res);
+		   return json;
+		}
+		catch(e)
+		{
+		  return false;
+		}
+	}
+
+function make_default(thi){
+  $('#photo_c').val(thi.attr('data'));
+  $('.img').css({"box-shadow": "0px 0px 0px 0px"});
+  thi.css({"box-shadow": "0px 0px 2px 2px black"});
+}
+
+function div (param)
+{
+	if(param.op != 'destroy')
+	{
+		if($('#wnd_'+param.id).length == 0)
+		{
+			var top = param.element.offset().top;
+			var left = param.element.offset().left + (e.width() + 18);
+			var curs = "<div></div>";
+			if(param.position == "bottom")
+			{
+				top = param.element.offset().top+param.element.height()+22;
+				left = param.element.offset().left - 16;
+				curs = "";
+			}
+			var a = $('<div id="wnd_'+param.id+'" class="info">'+curs+param.text+'</div>').appendTo('body');
+				a.css
+					({
+						'position' : 'absolute',
+						'top'      : top+"px",
+						'left'     : left+15+"px"
+					});
+		}
+	}
+	else
+	{
+		if($('#wnd_'+param.id).length > 0)	$('#wnd_'+param.id).remove();
+	}
+}
+
+</script>

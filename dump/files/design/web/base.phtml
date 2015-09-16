@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html>
+<head><base href='<? echo HOME; ?>'></base>
+<title><? echo $board->INFO['title']; ?></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" href="/mobile/vendor/bootstrap/dist/css/bootstrap.min.css">
+<link rel='stylesheet' type='text/css' href='/css/styles.css'>
+<link rel='stylesheet' type='text/css' href='/css/plugins.css'>
+<link rel="icon" href="favicon.png" type="image/x-icon">
+<link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<script type='text/javascript' src='/js/jquery-1.9.1.min.js'></script>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<link rel="stylesheet" type="text/css" href="js/jquery.fancybox.css" media="screen">
+<script type="text/javascript" src="js/jquery.fancybox.pack.js"></script>
+<link rel="stylesheet" type="text/css" href="js/jquery.fancybox-buttons.css" media="screen">
+<script type="text/javascript" src="js/jquery.fancybox-buttons.js"></script>
+        <script type='text/javascript'>
+        $(document).ready(function(){
+        $("a[rel=gallery]").fancybox({
+        closeBtn  : true,
+        arrows    : true,
+        nextClick : true,
+
+
+	    	});
+        });
+        </script>
+
+<script type='text/javascript' src='js/upload.js'></script>
+<script type='text/javascript' src='js/styles.js'></script>
+<script type='text/javascript' src='js/adpost.info.js'></script>
+<script type='text/javascript' src='js/map.js'></script>
+<script type='text/javascript' src='js/functions.js?3245'></script>
+<script type='text/javascript' src='js/ready.js?2345'></script>
+<script type='text/javascript' src='js/marketplus.validate.js'></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=true&language=ru"></script>
+
+<? echo $board->getAdmin() ? "<script type=\"text/javascript\" src=\"plugins/ckeditor/ckeditor.js\"></script>" : "";?>
+<!--[if IE]>
+<script type='text/javascript' src='js/excanvas/excanvas.js'></script>
+<![endif]-->
+<script type="text/javascript">
+	jQuery(document).ready(function(){
+		jQuery('#service_button a').click(function(){
+			return false;
+		});
+
+		jQuery('.smsbutt').hover(function(){
+			var smsprice = jQuery('.prs2').text();
+			jQuery('.price-hover').text(smsprice+' гривен');
+			jQuery('.tip-oplati').text('через смс');
+			jQuery('.o-p').css('display', 'block');
+		});
+		jQuery('.intButt').hover(function(){
+			var prs1 = jQuery('.prs1').text();
+			jQuery('.price-hover').text(prs1+' рублей');
+			jQuery('.tip-oplati').text('через Яндекс деньги');
+			jQuery('.o-p').css('display', 'block');
+		});
+		jQuery('.prw24butt').hover(function(){
+			var prs3 = jQuery('.prs3').text();
+			jQuery('.price-hover').text(prs3+' гривен');
+			jQuery('.tip-oplati').text('через Приват банк');
+			jQuery('.o-p').css('display', 'block');
+		});
+
+		jQuery('.smsbutt').click(function(){
+			jQuery('.toggle1').css('display', 'block');
+			jQuery('#service_button').css('display', 'none');
+			return false;
+		});
+		jQuery('.intButt').click(function(){
+			jQuery('.intclick').click();
+			return false;
+		});
+		jQuery('.prw24butt').click(function(){
+			jQuery('.privatForm').click();
+			return false;
+		});
+	});
+</script>
+</head>
+<body><!----><div align='center' class='white-content'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300&subset=latin,latin-ext,cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>
+<div class="headerline">
+<div class="conblock">
+<div class="logo"><a href='<? echo HOME; ?>'><img src="img/logo.png" ></a></div>
+
+
+
+
+
+<div class='right'>
+
+	<a href='<? echo HOME.'rules/'; ?>'>Правила</a>
+	<a href='<? echo HOME.'help/'; ?>'>Техподдержка</a>
+	<?
+		if($board->getUser())
+		{
+			echo "<strong>".$board->email."</strong>";
+		}else{
+		echo "<a class='mbutton' href='".HOME."register/'>Регистрация</a>";
+		}
+		echo "<a class='mbutton' href='".HOME."profile/'>Личный кабинет</a>";
+ 		echo "<a class='ybutton' href='add-item/'>Подать объявление</a>";
+	?>
+</div>
+
+<div class='clr'></div>
+
+</div>
+</div>
+
+
+<?if($_SERVER['REQUEST_URI']=="/"){?>
+<?php $items = $board->getProducts(); ?>
+<?php $i = 0 ?>
+<?php $j = 0 ?>
+<div class="row-fluid">
+            <div class="carousel slide" id="myCarousel">
+                <div class="carousel-inner">
+                <?php foreach ($items->all as $item): ?> 
+                    <?php $i++; ?>
+                    <?php $j++; ?>
+                    <?php if ($i == 1):?>
+                  <div class="item<?php if ($j == 1) echo ' active';?>">
+                        <ul class="thumbnails">
+                    <?php endif;?>
+                            <li class="span3">
+                                <div class="thumbnail">
+                                    <img src="<?=$item->avatar?>" alt="">
+                                </div>
+                                <p><span class="header-height"><?=$item->product['header']?></span>
+                                <small class="red"><?=$item->product['price']?><?=strtoupper($item->product['price_t'])?></small><br>
+                                <a href="/obj/<?=$item->product['board_id']?>/" class="btn btn-warning">Подробнее</a></p>
+                            </li>
+                  <?php if ($i == 4 || $j == $items->count):?>
+                        </ul>
+                  </div>
+                  <?php $i = 0; ?>
+                  <?php endif;?>
+                <?php endforeach; ?>
+                </div>
+                <a data-slide="prev" href="#myCarousel" class="left carousel-control">‹</a>
+                <a data-slide="next" href="#myCarousel" class="right carousel-control">›</a>
+            </div>
+        </div>
+
+
+<script>
+
+Array.prototype.shuffle = function( b )
+{
+ var i = this.length, j, t;
+ while( i )
+ {
+  j = Math.floor( ( i-- ) * Math.random() );
+  t = b && typeof this[i].shuffle!=='undefined' ? this[i].shuffle() : this[i];
+  this[i] = this[j];
+  this[j] = t;
+ }
+ return this;
+};
+
+var arr = new Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+console.log( arr.shuffle() );
+
+totalItems= 10;
+xcr = Math.floor(Math.random()*totalItems+1);//return a number between 1 - 10
+xcr=xcr-1;
+xor=xcr;
+if(xcr==arr[0]){
+	$(".img10").animate({
+      		"opacity": 0
+    	}, 0);
+	$(".img1").animate({
+      		"opacity": 1
+    	}, 0);
+}
+if(xcr==arr[1]){
+	$(".img1").animate({
+      		"opacity": 0
+    	}, 0);
+	$(".img2").animate({
+      		"opacity": 1
+    	}, 0);
+}
+if(xcr==arr[2]){
+$(".img2").animate({
+      		"opacity": 0
+    	}, 0);
+	$(".img3").animate({
+      		"opacity": 1
+    	}, 0);
+}
+if(xcr==arr[3]){
+$(".img3").animate({
+      		"opacity": 0
+    	}, 0);
+	$(".img4").animate({
+      		"opacity": 1
+    	}, 0);
+}
+if(xcr==arr[4]){
+$(".img4").animate({
+      		"opacity": 0
+    	}, 0);
+	$(".img5").animate({
+      		"opacity": 1
+    	}, 0);
+}
+if(xcr==arr[5]){
+$(".img5").animate({
+      		"opacity": 0
+    	}, 0);
+	$(".img6").animate({
+      		"opacity": 1
+    	}, 0);
+}
+if(xcr==arr[6]){
+$(".img6").animate({
+      		"opacity": 0
+    	}, 0);
+	$(".img7").animate({
+      		"opacity": 1
+    	}, 0);
+}
+if(xcr==arr[7]){
+$(".img7").animate({
+      		"opacity": 0
+    	}, 0);
+	$(".img8").animate({
+      		"opacity": 1
+    	}, 0);
+}
+if(xcr==arr[8]){
+$(".img8").animate({
+      		"opacity": 0
+    	}, 0);
+	$(".img9").animate({
+      		"opacity": 1
+    	}, 0);
+}
+if(xcr==arr[9]){
+$(".img9").animate({
+      		"opacity": 0
+    	}, 0);
+	$(".img10").animate({
+      		"opacity": 1
+    	}, 0);
+}
+
+function sec() {
+$(".imga").css({"opacity": "0"});
+
+
+console.log(xor);
+
+console.log(arr);
+
+
+switch (arr[xor]) {
+  case 1:
+    $(".img1").animate({
+      		"opacity": 1
+    	}, 500);
+		totalItems= 10;
+xcr = Math.floor(Math.random()*totalItems+1);//return a number between 1 - 10
+xcr=xcr-1;
+xor=xcr;
+		break;
+  case 2:
+    $(".img2").animate({
+      		"opacity": 1
+    	}, 500);
+		totalItems= 10;
+xcr = Math.floor(Math.random()*totalItems+1);//return a number between 1 - 10
+xcr=xcr-1;
+xor=xcr;
+		break;
+  case 3:
+   $(".img3").animate({
+      		"opacity": 1
+    	}, 500);
+		totalItems= 10;
+xcr = Math.floor(Math.random()*totalItems+1);//return a number between 1 - 10
+xcr=xcr-1;
+xor=xcr;
+		break;
+  case 4:
+  $(".img4").animate({
+      		"opacity": 1
+    	}, 500);
+		totalItems= 10;
+xcr = Math.floor(Math.random()*totalItems+1);//return a number between 1 - 10
+xcr=xcr-1;
+xor=xcr;
+		break;
+  case 5:
+  $(".img5").animate({
+      		"opacity": 1
+    	}, 500);
+		totalItems= 10;
+xcr = Math.floor(Math.random()*totalItems+1);//return a number between 1 - 10
+xcr=xcr-1;
+xor=xcr;
+		break;
+  case 6:
+  $(".img6").animate({
+      		"opacity": 1
+    	}, 500);
+		totalItems= 10;
+xcr = Math.floor(Math.random()*totalItems+1);//return a number between 1 - 10
+xcr=xcr-1;
+xor=xcr;
+		break;
+  case 7:
+  $(".img7").animate({
+      		"opacity": 1
+    	}, 500);
+		totalItems= 10;
+xcr = Math.floor(Math.random()*totalItems+1);//return a number between 1 - 10
+xcr=xcr-1;
+xor=xcr;
+		break;
+  case 8:
+  $(".img8").animate({
+      		"opacity": 1
+    	}, 500);
+		totalItems= 10;
+xcr = Math.floor(Math.random()*totalItems+1);//return a number between 1 - 10
+xcr=xcr-1;
+xor=xcr;
+		break;
+  case 9:
+  $(".img9").animate({
+      		"opacity": 1
+    	}, 500);
+		totalItems= 10;
+xcr = Math.floor(Math.random()*totalItems+1);//return a number between 1 - 10
+xcr=xcr-1;
+xor=xcr;
+		break;
+  case 10:
+  $(".img10").animate({
+      		"opacity": 1
+    	}, 500);
+		totalItems= 10;
+xcr = Math.floor(Math.random()*totalItems+1);//return a number between 1 - 10
+xcr=xcr-1;
+xor=xcr;
+		break;
+  default:
+    $(".img1").animate({
+      		"opacity": 1
+    	}, 500);
+		totalItems= 10;
+xcr = Math.floor(Math.random()*totalItems+1);//return a number between 1 - 10
+xcr=xcr-1;
+xor=xcr;
+		break;
+}
+
+
+
+
+
+
+}
+setInterval(sec, 5000); //интервал 1000 = 1 sec
+</script>
+
+
+<?}else{}?>
+
+
+<?
+
+
+
+?><!--﻿--><?
+$user_ip = $_SERVER['REMOTE_ADDR'];
+
+if ($_SERVER['REQUEST_URI']=="/"){
+?>
+
+<div class="searchline">
+<div class="conblock">
+<div class="searchlabel">Поиск по обьявлениям</div>
+
+
+	<form  method='get' action="http://www.i-market.com.ua/search/" action='<? echo $action . $top; ?>' id='search-form'>
+
+
+
+	<div class="searchinput">
+		<div class="allregions" >
+			<a href='javascript:void(0);'  class='choose-region-from-list' data-category="<? echo $board->search->CAT_HREF; ?>"><span id='regionName'>
+			<?echo !empty($board->search->R) ? $board->search->REGION['name'] : "Вся Украина";?>
+			</span><span class='inline sdown'></span>
+			</a>
+		</div>
+		<input  type='text' name='q' placeholder='Что ищем?' value='<? echo isset($_GET['q'])?str_replace("'", "&#39;", $_GET['q']):''; ?>' >
+	</div>
+	<button class="searchbutton" type='submit' id='s-button'>Найти</button>
+
+
+	</form>
+
+
+
+
+<?
+if(ADVANCED === true) echo "<div class='searchmega'><a href='".HOME."search/'>Расширеный поиск</a></div>";
+if(ADVANCED_ON === true)
+{
+	echo "<div>";
+	$board->search->getFilters();
+	echo "</div>";
+}
+?>
+
+<div class="clr"></div>
+</div>
+</div>
+
+<?
+}
+else{?>
+
+
+<?
+
+	$top = isset($_GET['top_all']) ? '?top_all' : '' ;
+
+	$action = HOME;
+	if(!empty($board->search->R))
+	$action .= $board->search->R."/";
+	if(!empty($board->search->CAT_HREF))
+	$action .= $board->search->CAT_HREF."/";
+	if($action == HOME)
+	$action .= "search/";
+?>
+
+<div class="searchline">
+<div class="conblock">
+<div class="searchlabel">Поиск по обьявлениям</div>
+
+
+	<form  method='get' action="http://www.i-market.com.ua/search/" action='<? echo $action . $top; ?>' id='search-form'>
+
+
+
+	<div class="searchinput">
+		<div class="allregions" >
+			<a href='javascript:void(0);'  class='choose-region-from-list' data-category="<? echo $board->search->CAT_HREF; ?>"><span id='regionName'>
+			<?echo !empty($board->search->R) ? $board->search->REGION['name'] : "Вся Украина";?>
+			</span><span class='inline sdown'></span>
+			</a>
+		</div>
+		<input  type='text' name='q' placeholder='Что ищем?' value='<? echo isset($_GET['q'])?str_replace("'", "&#39;", $_GET['q']):''; ?>' >
+	</div>
+	<button class="searchbutton" type='submit' id='s-button'>Найти</button>
+
+
+	</form>
+
+
+
+
+<?
+echo "<div class='searchmega'><a href='".HOME."search/'>Расширеный поиск</a></div>";
+
+?>
+
+<div class="clr"></div>
+</div>
+</div>
+
+<div class="conblock bfilters">
+<?
+if(ADVANCED_ON === true)
+{
+	echo "<div class='left' style='width: 100%'>";
+	$board->search->getFilters();
+	echo "</div>";
+}
+
+?>
+</div>
+
+
+
+
+
+<div class='cboth'></div>
+
+<?}
+?>
+
+<?=$this->getContent() ?>
+
+</div>
+</div>
+
+
+
+<style>
+.pagebottom{width:100%;background:#fff;}
+.pagebottom a{line-height:24px;height:24px;color:#a9a9a9;display:block;}
+.pagebottom .conblock{border-top:1px solid #f5f5f5;padding-top:20px;padding-bottom:20px;height:auto;}
+.white-content{border:0px;}
+.col{float:left;width:180px;}
+.copy{float:right;line-height:24px;height:24px;color:#a9a9a9;display:block;}
+</style>
+
+<div class="pagebottom">
+<div class="conblock">
+<div class="col">
+<a href="/">Главная</a>
+<a href="/add-item/">Подать объявление</a>
+<a href="/search/">Расширенный поиск</a>
+</div>
+<div class="col">
+<a href="/rules/about/">О нас</a>
+<a href="/help/">Обратная связь</a>
+<a href="/rules/">Правила</a>
+</div>
+<div class="col">
+<a href="/register/">Регистрация</a>
+<a href="/profile/">Личный кабинет</a>
+<a href="/mobile/">Мобильная версия</a>
+</div>
+<div class="copy">
+<br/>
+© 2015 площадка для объявлений &laquo;iMarket&raquo;
+</div>
+<div class="clr"></div>
+</div>
+</div>
+
+<div class="clr"></div>
+<?
+?>
+
+<!-- HotLog -->
+<span id="hotlog_counter" style="display:none;"></span>
+<span id="hotlog_dyn"></span>
+<script type="text/javascript"> var hot_s = document.createElement('script');
+hot_s.type = 'text/javascript'; hot_s.async = true;
+hot_s.src = 'http://js.hotlog.ru/dcounter/2497061.js';
+hot_d = document.getElementById('hotlog_dyn');
+hot_d.appendChild(hot_s);
+</script>
+<noscript>
+<a href="http://click.hotlog.ru/?2497061" target="_blank">
+<img src="http://hit34.hotlog.ru/cgi-bin/hotlog/count?s=2497061&im=305" border="0"
+title="HotLog" alt="HotLog" style="height:0px;"></a>
+</noscript>
+<!-- /HotLog -->
+</div>
+<script type='text/javascript'>
+ (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ ga('create', 'UA-35803778-3', 'iMarket.ua'); ga('send', 'pageview');
+</script>
+<script src="/mobile/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

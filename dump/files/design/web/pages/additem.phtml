@@ -1,0 +1,391 @@
+<?php $errors = $this->get('errors'); ?>
+<?php $FlagAddAdv = $this->get('FlagAddAdv'); ?>
+<?php $photos_id = $this->get('photos_id'); ?>
+<?php $title = $this->get('title'); ?>
+<?php $autor = $this->get('autor'); ?>
+<?php $email = $this->get('email'); ?>
+<?php $phone = $this->get('phone'); ?>
+<?php $text = $this->get('text'); ?>
+<?php $type = $this->get('type'); ?>
+<?php $price = $this->get('price'); ?>
+<?php $price_t = $this->get('price_t'); ?>
+<?php $city = $this->get('city'); ?>
+<?php $root_region = $this->get('root_region'); ?>
+<?php $root_category = $this->get('root_category'); ?>
+<?php $id_category = $this->get('id_category'); ?>
+<?php $address = $this->get('address'); ?>
+
+<?php
+function getCategory($root_id = 0, $selected = 0, $txt = "Основная категория")
+{
+	$db = new dataBase();
+	echo "<div class='pbt5' ".($root_id == 0 ? "id='choose-category'":"").">
+	<div class='left item-left mtop9'>$txt <span class='red'>*</span></div>
+	<div class='left mleft10' >";
+	echo "<span class='additem-select'>";
+	echo "<select ".($root_id != 0 ? "name='id_category'":"")." data-validate=\"v_required\">
+	<option value='' disabled ".($selected == 0 ? "selected" : "").">Выбрать...</option>";
+	$db->query("SELECT * FROM categories WHERE root_id = '$root_id'");
+	while($c = mysql_fetch_array($db->data))
+	{
+		echo "<option value='".$c['id']."' data-id='".$c['id']."' ".(($selected === $c['id'] or $selected === $c['href']) ? "selected" : "").">".$c['name']."</option>";
+	}
+	echo "</select>
+	</span>";
+	echo "</div>
+	<div class='cboth'></div>
+	</div>";
+}
+
+function getRegion($root_id = 0, $selected = 0, $txt = "Регион")
+{
+	$db = new dataBase();
+	echo "<div class='pbt5' ".($root_id == 0 ? "id='choose-region'":"id='city'").">
+	<div class='left item-left mtop9'>$txt <span class='red'>*</span></div>
+	<div class='left mleft10' >";
+	echo "<span class='additem-select'>";
+	echo "<select ".($root_id != 0 ? "name='city'":"")." data-validate=\"v_required\">
+	<option value='' disabled ".($selected == 0 ? "selected" : "").">Выбрать...</option>";
+	$db->query("SELECT * FROM region WHERE root_id = '$root_id'");
+	while($c = mysql_fetch_array($db->data))
+	{
+		echo "<option value='".$c['href']."' data-id='".$c['id']."' ".(($selected === $c['id'] or $selected === $c['href']) ? "selected" : "").">".$c['name']."</option>";
+	}
+	echo "</select>
+	</span>";
+	echo "</div>
+	<div class='cboth'></div>
+	</div>";
+}
+
+$user = array(
+'phone' => false,
+'name' => false,
+'region' => false
+);
+
+if($id = $board->getUserId()){
+	$result = $db->query("SELECT * FROM users WHERE id = " . $id);
+	$user = mysql_fetch_array($result);
+}
+
+?>
+<div id='content' align='left' class=''>
+<h1 class='mh1'><? echo $board->INFO['h1']; ?></h1>
+<div id='additem-content'>
+<script>
+	function submit_form(obj)
+	{
+		if($('#photo-content').html().length <= 0) {
+			alert('Нужно добавить хотя бы одну фотографию.');
+			return false;
+		}
+		return validate(obj);
+	}
+</script>
+<div
+?>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<?php if(!$FlagAddAdv){ ?>
+<form method='post' action='<? echo isset($_GET['act']) && !empty($_GET['act'])? HOME.'add-item/'.$_GET['act'].'/' : HOME.'add-item/'; ?>' onSubmit="return submit_form($(this));">
+<div class='pbt5'>
+<div class='left item-left mtop7'>Заголовок <span class='red'>*</span></div>
+<div class='left mleft10'>
+<input type='text' class='additem-input' name='title' value='<?echo $title;?>' data-info='Введите заголовок объявления.<br />  Заголовок должен быть составлен<br /> максимально  емко и понятно.<br /><strong>Внимание!<br />- Избегайте заглавных букв!<br />- Избегайте заголовков типа "Продам",<br /> "Куплю" и т.д</strong>' data-validate="v_required, v_min_5, v_max_60"/></div>
+<div class='cboth'></div>
+</div>
+<?
+	getCategory(0, $root_category);
+	if($root_category != 0)
+	getCategory($root_category, $id_category, "Подкатегория");
+?>
+<hr />
+<div class='pbt5'>
+<div class='left item-left mtop7'>Ваше имя <span class='red'>*</span></div>
+<div class='left mleft10'>
+<input type='text' class='additem-input' name='autor' value='<?echo (!empty($autor) ? $autor : ((!empty($user['name'])) ? $user['name'] : '' ));?>'  data-validate="v_required, v_max_60">
+</div>
+<div class='cboth'></div>
+</div>
+<div class='pbt5'>
+<div class='left item-left mtop7'>Ваш телефон <span class='red'>*</span></div>
+<div class='left mleft10'><input type='text' class='additem-input' name='phone' value='<?echo (!empty($phone) ? $phone : ((!empty($user['phone'])) ? $user['phone'] : '' ));?>'  data-validate="v_required, v_phone"></div>
+<div class='cboth'></div>
+</div>
+<div class='pbt5'>
+<div class='left item-left mtop7'>Ваш e-mail *</div>
+<div class='left mleft10'>
+<input type='text' class='additem-input' name='email' value='<?echo $email;?>'  data-validate="v_required, v_email"></div>
+<div class='cboth'></div>
+</div>
+<hr />
+<div class='pbt5'>
+<div class='left item-left mtop7'>Описание товара <span class='red'>*</span></div>
+<div class='left mleft10'><textarea class='additem-input additem-textarea' name='text'  data-validate="v_required, v_min_15, v_max_1500"><?echo $text;?></textarea>
+<div class='mtop11'>
+<input type='radio' name='type' value='S' id='person' <?echo $type == 'S' ? 'checked' : '';?>/><label for='person'>Частное лицо</label> <br />
+<input type='radio' name='type' value='B' id='business' <?echo $type == 'B' ? 'checked' : '';?>/><label for='business'>Бизнес</label>
+</div>
+</div>
+<div class='cboth'></div>
+</div>
+<div class='pbt5'>
+<div class='left item-left mtop7'>Цена</div>
+<div class='left mleft10'><input style="width: 100px !important;" type='text' class='additem-input' name='price' value="<?echo $price;?>"  data-validate="v_num_only"><div style="width: 50px !important;margin-top: -33px;margin-left: 130px;" class="additem-select"><select style="width: 50px !important;" name="price_t"><option value='uah'<?php echo ($price_t=='uah')?' selected':''?>>грн</option><option value='usd'<?php echo ($price_t=='usd')?' selected':''?>>$</option></select></div></div>
+<div class='cboth'></div>
+</div>
+<hr />
+<div class='pbt5'>
+<div class='left item-left mtop7'><span class='red'>Фотографии *</span></div>
+<div class='left mleft10'>
+<div class='add-but'>Нажмите, чтобы добавить фотографии</div>
+<div id='photo-content'><?
+$c = $db->query("SELECT count FROM photo_main WHERE folder = '".functions::q($photos_id)."'");
+$count = mysql_fetch_array($c);
+$ph = ($count['count']) ? $count['count'] : 0 ;
+
+	$db->query("SELECT * FROM photo WHERE folder = '".functions::q($photos_id)."'");
+	$i = 0;
+	while($p = mysql_fetch_assoc($db->data))
+	{
+		$url = HOME.'photo/'.$p['folder'].'/'.$p['name'];
+		$url_local = DIR.'/photo/'.$p['folder'].'/'.$p['name'];
+		$size = functions::getFullSize($url_local, 90, 90);
+		echo "<span class='photo-min'>";
+		echo "<span class='img-min img' ".(($ph == $i) ? 'style="box-shadow: black 0px 0px 2px 2px;"' : '' )." data='$i' onclick=\"make_default($(this))\" data-info=\"Кликните для выбора главной фотографии объявления\">";
+		echo "<img src='$url' width='".$size['width']."' height='".$size['height']."'>";
+		echo "</span>";
+		echo "<a href='javascript:void(0);' data-id=\"".$p['id']."\">Удалить</a>";
+		echo "</span>";
+		$i++;
+	}
+?></div>
+<input type='hidden' name='photos_id' id='photos_id' required value='<? echo $photos_id; ?>'/>
+<input type="hidden" name='photo_c' id='photo_c' value="<?php echo $ph;?>">
+<!--
+<button type='button' class='button'>
+			<div class='submit mini-s'>
+			Выбрать...
+			</div>
+</button>-->
+</div>
+<div class='cboth'></div>
+</div>
+<hr />
+<?
+if(!empty($user['region'])){
+	$res = $db->query("select root_id from region where href= '".$user['region']."'");
+	$reg = mysql_fetch_array($res);
+}
+	$root_region = (!empty($root_region) ? $root_region : (!empty($reg['root_id']) ? $reg['root_id'] : 0 ));
+	$city = (!empty($city) ? $city : (!empty($user['region']) ? $user['region'] : 0 ));
+	getRegion(0, $root_region);
+	if($root_region != 0)
+	getRegion($root_region, $city, "Город");
+?>
+<div class='pbt5'>
+<div class='left item-left mtop7'>Адрес </div>
+<div class='left mleft10'><input type='text' class='additem-input' name='address' value="<?echo $address;?>"></div>
+<div class='cboth'></div>
+
+
+
+
+
+
+</div>
+
+<hr />
+<?
+if($errors != "")
+{
+	echo "<div class='left mtop11 mleft100 errors'>$errors</div><div class='cboth'></div>";
+}
+?>
+<div class='left mtop11 mleft100'>
+<button type='submit' class='button2'>
+			<div class='submit'>
+			<? echo isset($_GET['act']) ? "Редактировать" : "Опубликовать" ?>
+			</div>
+</button>
+</div>
+</form>
+<?php } else
+{
+	//echo '<h1>Объявление успешно подано</h1> <br/> <a href="/profile">Перейти к списку моих объявлений</a>';
+	echo '<script type="text/javascript">
+	  location="'.HOME.'profile/";
+	  document.location.href="'.HOME.'profile/";
+	  location.replace("'.HOME.'profile/");
+	  window.location.reload("'.HOME.'profile/");
+	  document.location.replace("'.HOME.'profile/");
+	</script>';
+	exit;
+}?>
+</div>
+<div class='cboth'></div>
+</div>
+<script type='text/javascript'>
+function make_default(thi){
+  $('#photo_c').val(thi.attr('data'));
+  $('.img').css({"box-shadow": "0px 0px 0px 0px"});
+  thi.css({"box-shadow": "0px 0px 2px 2px black"});
+}
+$(function(){
+	var btn = $('.add-but');
+	var id  = $('#photos_id').val();
+	var content = $('#photo-content');
+	new AjaxUpload(btn, {
+	action: 'http://'+window.location.host+'/upload.php',
+	name: 'uploadfile',
+	data: { id: id, op: 'upload' },
+	onSubmit: function(file, ext) {
+		//Loading
+	},
+	onComplete: function(file, response) {
+		var data = cJSON(response);
+		if (!data) {
+			alert(response);
+		} else {
+			fckngcrap = true;
+        var c = 0;
+        var next = 0;
+        if($('.img').length > 0){
+                $('.img').each(function(){
+                        if($(this).attr('data') > c) c = $(this).attr('data');
+                });
+                next = c + 1;
+        }
+			var html = "";
+			html += "<span class='photo-min'>";
+			html += "<span class='img-min img' data='"+next+"' onclick=\"make_default($(this))\" data-info=\"Кликните для выбора главной фотографии объявления\">";
+			html += "<img src='"+data.path+"' width='"+data.width+"' height='"+data.height+"'>";
+			html += "</span>";
+			html += "<a href='javascript:void(0);' data-id=\""+data.id+"\">Удалить</a>";
+			html += "</span>";
+			content.append(html);
+			$('.img').off('mouseover');
+			$('.img').off('mouseout');
+                $('.img').each(function(i)
+                {
+                        $(this).mouseover( function() {
+                                var position = 'right';
+                                if($(this).data('pos') != undefined) position = $(this).data('pos');
+
+                                e = $(this);
+                                txt = e.data('info');
+                                div({
+                                id: i,
+                                text: txt,
+                                position: position,
+                                type: 'information',
+                                element: e
+                                });
+                        }).mouseout(function() {
+                                div({
+                                id: i,
+                                op: 'destroy'
+                                });
+                        });
+                })
+		}
+	}
+	});
+});
+$(document).on('click', '.photo-min a', function(e)
+{
+	var el = $(e.target).closest('.photo-min');
+	var id = el.find('a').data('id');
+	$.ajax({
+		type: "POST",
+		url: 'http://'+window.location.host+'/upload.php',
+		scriptCharset: 'utf-8',
+		data: {id: id, op: 'delete'},
+		success: function(response)
+		{
+			if(response == 'ok') el.remove();
+			else alert(response);
+		}
+	});
+});
+$('#choose-region').find('select').on('change', function()
+{
+	var html = "";
+	var id = $(this).find("option:selected").data('id');
+	$.ajax({
+		type: "GET",
+		url: 'http://'+window.location.hostname+'/ajax/info.php',
+		scriptCharset: 'utf-8',
+		data: '&reg_id='+encodeURIComponent(id),
+		success: function(response)
+		{
+			arr = cJSON(response);
+			if(!arr) alert("");
+			else
+			{
+				var html = "<div class='pbt5' id='city'>";
+				html += "<div class='left item-left mtop9'>Город <span class='red'>*</span></div>";
+				html += "<div class='left mleft10'>";
+				html += "<span class='additem-select'>";
+				html += "<select name='city' data-validate=\"v_required\">";
+				html += "<option value='' disabled selected>Выбрать...</option>";
+				for(var i in arr)
+				{
+					html += "<option value='"+i+"'>"+arr[i]+"</option>";
+				}
+				html += "</select></span></div>";
+				html += "<div style='clear: both;'></div>";
+				$('#city').remove();
+				$('#choose-region').after(html);
+			}
+		}
+	});
+});
+$('#choose-category').find('select').on('change', function()
+{
+	var html = "";
+	var id = $(this).find("option:selected").data('id');
+	$.ajax({
+		type: "GET",
+		url: 'http://'+window.location.hostname+'/ajax/info.php',
+		scriptCharset: 'utf-8',
+		data: '&cat_id='+encodeURIComponent(id),
+		success: function(response)
+		{
+			arr = cJSON(response);
+			if(!arr) alert("");
+			else
+			{
+				var html = "<div class='pbt5' id='subcategory'>";
+				html += "<div class='left item-left mtop9'>Подкатегория <span class='red'>*</span></div>";
+				html += "<div class='left mleft10'>";
+				html += "<span class='additem-select'>";
+				html += "<select name='id_category' data-validate=\"v_required\">";
+				html += "<option value='' disabled selected>Выбрать...</option>";
+				for(var i in arr)
+				{
+					html += "<option value='"+i+"'>"+arr[i]+"</option>";
+				}
+				html += "</select></span></div>";
+				html += "<div style='clear: both;'></div>";
+				$('#subcategory').remove();
+				$('#choose-category').after(html);
+			}
+		}
+	});
+});
+function cJSON(res)
+	{
+		try
+		{
+		   var json = $.parseJSON(res);
+		   return json;
+		}
+		catch(e)
+		{
+		  return false;
+		}
+	}
+</script>

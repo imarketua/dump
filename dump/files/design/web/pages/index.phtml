@@ -1,0 +1,157 @@
+<style>
+    .inline-list-ul {
+    width: 205px !important;
+    height: 90px !important;
+    display: inline-block !important;
+    list-style: none;
+    vertical-align: top !important;
+    margin: 0 auto;
+    padding: 10px;
+}
+.inline-list-ul a {
+    display: block !important;
+    height: 20px !important;
+    line-height: 20px !important;
+    padding: 5px;
+    text-align: left;
+    color: #989797;
+}
+.inline-list-ul a:hover {
+    color: #6ac2d6;
+}
+.container-mi {
+    width: 940px;
+    padding: 10px;
+    height: 90px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #f0f0f0;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    position: relative !important;
+}
+.icon-cat {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    padding: 5px;
+    margin-top: -2px;
+    vertical-align: middle;
+}
+.icon-cat-1 {
+    background:transparent url('img/cat/cat-1.png') no-repeat center center;
+}
+.icon-cat-2 {
+    background:transparent url('img/cat/cat-4.png') no-repeat center center;
+}
+.icon-cat-3 {
+    background:transparent url('img/cat/cat-7.png') no-repeat center center;
+}
+.icon-cat-4 {
+    background:transparent url('img/cat/cat-10.png') no-repeat center center;
+}
+.icon-cat-5 {
+    background:transparent url('img/cat/cat-2.png') no-repeat center center;
+}
+.icon-cat-6 {
+    background:transparent url('img/cat/cat-5.png') no-repeat center center;
+}
+.icon-cat-7 {
+    background:transparent url('img/cat/cat-8.png') no-repeat center center;
+}
+.icon-cat-8 {
+    background:transparent url('img/cat/cat-11.png') no-repeat center center;
+}
+.icon-cat-9 {
+    background:transparent url('img/cat/cat-3.png') no-repeat center center;
+}
+.icon-cat-10 {
+    background:transparent url('img/cat/cat-6.png') no-repeat center center;
+}
+.icon-cat-11 {
+    background:transparent url('img/cat/cat-9.png') no-repeat center center;
+}
+.icon-cat-12 {
+    background:transparent url('img/cat/cat-12.png') no-repeat center center;
+}
+.min-ccr strong {
+    left: 5px;
+    position: relative;
+    font-size: 10px;
+}
+</style>
+<div class="list-inline-block">
+  <div class="container-mi" align="center">
+  <?
+	$board->getCategories();
+?>
+
+  </div>
+</div>
+<div id='content' align='left' style="width: 940px;">
+<!--h1 class='mh1'><? echo $board->INFO['h1']; ?></h1-->
+<div class='left'>
+	<h2 class='mh2' style="font-size: 14px;"><b>О нас</b></h2><br>
+    <p style="width: 534px; color: #949494" align="justify">i-Market.com.ua - одна из самых популярных досок объявлений по всей Украине. На данном сайте Вы можете найти любые товары, начиная от б/у техники и заканчивая новой. Вы сможете найти так же объявления об любых услугах которые предоставляют люди. С помощью данного сайта Вы сможете найти товар, узнать кто продает его, связаться с продавцом и в кратчайшие сроки уже получить то чего Вы так хотели! Подайте Ваше объявление, для этого Вам нужно нажать только на кнопку "Подать объявление" и заполнить всю соответствующую информацию. Продайте легко, купите быстро только на нашем сайте!</p>
+    <p style="width: 534px; color: #949494" align="justify">Заголовок объявления должен быть кратким, информативным и привлекательным наименованием/описанием вашего товара, услуги или предложения. Помните: заголовок - это первое, на что обращает внимание потенциальный покупатель/клиент! Постарайтесь сделать его точным и лаконичным (максимальное количество символов: 70).<br></a></p>
+
+</div>
+<div class='right'>
+	<h2 class='mh2'><b>Выберите регион</b></h2>
+    <div class='mtop35 relative search-c' align='center'>
+	<div class='relative h33px w320px'>
+	<input class='form-input w297px find-region-input' type='text' placeholder='Начните вводить...'/><span class='search-city' style="right: -10px;"></span></div>
+	</div>
+	<div class='mtop11 mleftright12'>
+	<a class='index-s-link left choose-region-from-list' href='javascript:void(0);' style="padding: 8px 10px 8px 10px; margin-left: 10px;">Выбрать регион из списка</a>
+	<a class='index-s-link right' href='search/' style="margin-left: 10px;">Искать по Украине</a>
+	</div>
+	<div class='map relative' style="margin-top: 75px;">
+	<img src='img/map/0.png' width='100%' height='100%' usemap='#map' border='0'/>
+	<canvas id="mapCanvas" width='344' height='216'></canvas>
+	<a class='circle-min rkiev s-display-block' href='http://www.i-market.com.ua/kievskaya_obl/'><strong>Киев</strong></a>
+	<a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/chernigovskaya_obl/' style="left: 165px; top: 20px;"><strong>Чернигов</strong></a>
+    <a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/sumskaya_obl/' style="left: 230px; top: 35px;"><strong>Сумы</strong></a>
+    <a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/harkovskaya_obl/' style="left: 270px; top: 55px;"><strong>Харьков</strong></a>
+    <a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/luganskaya_obl/' style="left: 316px; top: 80px;"><strong>Луганск</strong></a>
+    <a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/donetskaya_obl/' style="left: 290px; top: 110px;"><strong>Донецк</strong></a>
+    <a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/zaporojskaya_obl/' style="left: 245px; top: 140px;"><strong>Запорожье</strong></a>
+    <a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/dnepropetrovskaya_obl/' style="left: 250px; top: 98px;"><strong>Днепропетровск</strong></a>
+    <a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/poltavskaya_obl/' style="left: 220px; top: 65px;"><strong>Полтава</strong></a>
+    <a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/hersonskaya_obl/' style="left: 190px; top: 150px;"><strong>Херсон</strong></a>
+    <a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/odesskaya_obl/' style="left: 130px; top: 150px;"><strong>Одесса</strong></a>
+    <a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/nikolaevskaya_obl/' style="left: 175px; top: 130px;"><strong>Николаев</strong></a>
+    <a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/kirovogradskaya_obl/' style="left: 185px; top: 95px;"><strong>Кировоград</strong></a>
+	<a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/cherkasskaya_obl/' style="left: 175px; top: 70px;"><strong>Черкассы</strong></a>
+    <a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/vinnitskaya_obl/' style="left: 130px; top: 80px;"><strong>Винница</strong></a>
+    <a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/jitomirskaya_obl/' style="left: 115px; top: 35px;"><strong>Житомир</strong></a>
+    <a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/rovnenskaya_obl/' style="left: 77px; top: 27px;"><strong>Ровно</strong></a>
+
+    <a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/volyinskaya_obl/' style="left: 44px; top: 30px;"><strong>Луцк</strong></a>
+    <a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/lvovskaya_obl/' style="left: 25px; top: 55px;"><strong>Львов</strong></a>
+    <a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/zakarpatskaya_obl/' style="left: 5px; top: 105px;"><strong>Ужгород</strong></a>
+    <a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/ivano-frankovskaya_obl/' style="left: 40px; top: 85px;"><strong>Ивано-Франковск</strong></a>
+    <a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/chernovitskaya_obl/' style="left: 60px; top: 115px;"><strong>Черновцы</strong></a>
+    <a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/ternopolskaya_obl/' style="left: 70px; top: 67px;"><strong>Тернополь</strong></a>
+    <a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/hmelnitskaya_obl/' style="left: 90px; top: 90px;"><strong>Хмельницкий</strong></a>
+    <a class='circle s-display-block min-ccr' href='http://www.i-market.com.ua/ar_kryim/' style="left: 218px; top: 175px;"><strong>АР Крым</strong></a>
+    </div>
+	<map name='map' id='maps'>
+	<?
+    $get = $this->get('area');
+		foreach ($get as $id => $r) {
+			echo "<area shape=\"poly\" title=\"".$r['name']."\" coords=\"".$r['coords']."\" href=\"".HOME.$r['href']."/\" />";
+		}
+	?>
+
+	</map>
+
+
+</div>
+<div class='cboth'></div>
+<!--div class='bottom-text'>
+<? echo $board->INFO['foot_text']; ?>
+</div-->
+</div>
+<script type='text/javascript'>
+initImageMap();
+</script>

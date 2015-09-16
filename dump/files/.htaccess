@@ -1,0 +1,60 @@
+ErrorDocument 401 /error.php
+ErrorDocument 403 /error.php
+ErrorDocument 404 /error.php
+ErrorDocument 500 /error.php
+
+#php_value error_reporting 1
+#php_flag display_errors off
+#php_flag magic_quotes_gpc Off
+
+
+
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresDefault "access 7 days"
+ExpiresByType application/javascript "access plus 1 year"
+ExpiresByType text/javascript "access plus 1 year"
+ExpiresByType text/css "access plus 1 year"
+ExpiresByType text/html "access plus 7 day"
+ExpiresByType text/x-javascript "access 1 year"
+ExpiresByType image/gif "access plus 1 year"
+ExpiresByType image/jpeg "access plus 1 year"
+ExpiresByType image/png "access plus 1 year"
+ExpiresByType image/jpg "access plus 1 year"
+ExpiresByType image/x-icon "access 1 year"
+ExpiresByType application/x-shockwave-flash "access 1 year"
+</IfModule>
+
+
+
+RewriteEngine on
+RewriteBase /
+
+AddDefaultCharset UTF-8
+
+
+RewriteRule ^mobile/?$ mobile.php
+RewriteRule ^add-item/?$ additem.php
+RewriteRule ^rules/?$ rules.php
+RewriteRule ^rules/([A-Za-z0-9_\-]+)/?$ rules.php?act=$1
+RewriteRule ^register/?$ register.php
+RewriteRule ^add-item/([A-Za-z0-9_\-]+)/?$ additem.php?act=$1
+RewriteRule ^region-map/$ region-map.php
+RewriteRule ^help/?$ help.php
+RewriteRule ^profile/?$ profile.php
+RewriteRule ^profile/([A-Za-z0-9_\-]+)/?$ profile.php?act=$1 [QSA]
+RewriteRule ^profile/([A-Za-z0-9_\-]+)/([A-Za-z0-9_\-]+)/?$ profile.php?act=$1&op=$2 [QSA]
+RewriteRule ^profile/([A-Za-z0-9_\-]+)/([A-Za-z0-9_\-]+)/([A-Za-z0-9_\-]+)/?$ profile.php?act=$1&op=$2&op2=$3 [QSA]
+RewriteRule ^profile/([A-Za-z0-9_\-]+)/([A-Za-z0-9_\-]+)/([A-Za-z0-9_\-]+)/([A-Za-z0-9_\-]+)/?$ profile.php?act=$1&op=$2&op2=$3&op3=$4 [QSA]
+RewriteRule ^search/?$ search.php [QSA]
+RewriteRule ^obj/([A-Za-z0-9_\-]+)/?$ board.php?board_id=$1
+RewriteRule ^service/([A-Za-z0-9_\-]+)/([0-9]+)/?$ service.php?act=$1&id=$2
+RewriteRule ^([A-Za-z0-9_\-]+)/?$ search.php?r=$1 [QSA]
+RewriteRule ^([A-Za-z0-9_\-]+)/([A-Za-z0-9_\-]+)/?$ search.php?r=$1&cat_href=$2 [QSA]
+
+## USER IP BANNING
+<Limit GET POST>
+ order allow,deny
+ deny from 178.75.116.204
+ allow from all
+</Limit>

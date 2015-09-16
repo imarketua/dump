@@ -1,0 +1,25 @@
+<div class="info-header">
+  <h3>Информация</h3>
+</div>
+<div class="info-navigation">
+  <ul>
+    <?
+      $pages = $this->get('pages');
+      $url   = $this->get('url');
+    	foreach ($pages as $key => $page) {
+        $url = $page['href'] != 'index' ? HOME.'rules/'.$page['href'].'/' : HOME.'rules/';
+        echo "<li><a href='$url'>".$page['name']."</a></li>";
+    	}
+    ?>
+  </ul>
+</div>
+<section class="info-content">
+  <div class="container">
+    <div class="info-content-header">
+      <h3><? echo $board->INFO['h1']; ?></h3>
+    </div>
+    <div class="content">
+      <? echo $board->INFO['text']; ?>
+    </div>
+  </div>
+</section>

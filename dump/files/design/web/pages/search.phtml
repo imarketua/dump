@@ -1,0 +1,65 @@
+<div id='content' align='center' class='additem-content'>
+<?
+$board->search->getBread();
+?>
+<div class='cboth'></div>
+<div class='board-content mtop11'>
+<div class='filters ptop11' style=''>
+<?
+	echo "<div class='right'>";
+	echo "<span class='additem-select w130 right hnorm' style=''>";
+	echo "<select id='sort' name='sort'>";
+	echo "<option value='' ".($_GET['sort'] == "" ? "selected" : "").">Самые новые</option>";
+	echo "<option value='price ASC' ".($_GET['sort'] == "price ASC" ? "selected" : "").">Самые дешевые</option>";
+	echo "<option value='price DESC' ".($_GET['sort'] == "price DESC" ? "selected" : "").">Самые дорогие</option>";
+	echo "<option value='hits DESC' ".($_GET['sort'] == "hits DESC" ? "selected" : "").">Самые популярные</option>";
+	echo "</select>";
+	echo "</span>";
+	$board->search->getBoardTypeFilter();
+
+	echo "</div>";
+	echo "<div class='left'>";
+	echo "<h1 class='s-h1'>".$board->INFO['h1']."</h1>";
+	echo "</div>";
+?>
+<div class='cboth'></div>
+</div>
+<?
+$board->getBanner(0);
+if(isset($_GET['top_all'])){
+	$board->search->getBoard('top');
+}else{
+	$board->search->getBoard('top4');
+	$board->getBoard();
+}
+
+$board->getBanner(2);
+$board->search->getPages();
+?>
+</div>
+</div>
+<script>
+function f_reload(e){
+    window.location.replace($(e).children('option:selected').attr('data-href'));
+    return false;
+}
+var minPrice = 0;
+var maxPrice = 0;
+function f_input(e){
+    var val = $(e).val();
+    var name = $(e).attr('name');
+    if (name == 'price_max'){
+        maxPrice = val;
+    }else{
+        minPrice = val;
+    }
+    $.ajax({
+        url : 'http://www.i-market.com.ua/ajax/action.php',
+        type : 'post',
+        data : {price_max : maxPrice, price_min : minPrice, type : 'search', ajax : 'on', photoonly : true},
+        success : function(data){
+            $('.board-content.mtop11').text('').append(data);
+        }
+    })
+}
+</script>

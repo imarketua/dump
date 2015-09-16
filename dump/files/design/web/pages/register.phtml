@@ -1,0 +1,9 @@
+<div id='content' align='left' class='additem-content'>
+<?php if(!isset($_POST['email']) && !isset($_POST['pass']) && !isset($_GET['confirm'])): ?>
+  <?php echo $board->getRegisterForm(); ?>
+<?php elseif(isset($_GET['confirm'])): ?>
+  <?php echo $board->confirm();?>
+<?php else: ?>
+  <?php $board->register(); ?>
+<?php endif; ?>
+</div>
